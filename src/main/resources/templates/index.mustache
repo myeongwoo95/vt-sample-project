@@ -1,5 +1,16 @@
 {{>layout/header}}
 
+    <h1>session clustering</h1>
+    <div style="margin-bottom:20px;">
+        {{^session}}
+            세션 존재하지않음
+        {{/session}}
+
+        {{#session}}
+            {{session}}
+        {{/session}}
+    </div>
+
     <h1>스프링부트 간단한 게시판</h1>
     <div class="col-md-12">
         <div class="row">

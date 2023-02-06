@@ -7,16 +7,31 @@ server:
       enabled: true
 
 spring:
+  session:
+    storage-type: redis
+    timeout: 1800 # 30분 <time-in-seconds>
+  redis:
+    host: ${REDIS_URL}
+    port: ${REDIS_PORT}
+
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Seoul
-    username: root
-    password: 1234
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://${MASTER_DB_URL}:${MASTER_DB_PORT}/${MASTER_DB_TABLE_NAME}?serverTimezone=Asia/Seoul
+      username: ${MASTER_DB_ID}
+      password: ${MASTER_DB_PW}
+
+    slave:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://${SLAVE_DB_URL}:${SLAVE_DB_PORT}/${SLAVE_DB_TABLE_NAME}?serverTimezone=Asia/Seoul
+      username: ${SLAVE_DB_ID}
+      password: ${SLAVE_DB_PW}
 
   jpa:
     show_sql: true
-    open-in-view: true
+    open-in-view: false # replication하려면 꺼야함
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
